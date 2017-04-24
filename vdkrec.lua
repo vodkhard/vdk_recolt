@@ -29,7 +29,7 @@ end)
 function IsNear()
     local ply = GetPlayerPed(-1)
     local plyCoords = GetEntityCoords(ply, 0)
-	if(IsPedInAnyVehicle(ply, true)) then
+	if(IsPedInAnyVehicle(ply, true) == false) then
 		for k, item in ipairs(JOBS) do
 			local distance_field = GetDistanceBetweenCoords(item.fx, item.fy, item.fz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
 			local distance_treatment = GetDistanceBetweenCoords(item.tx, item.ty, item.tz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
