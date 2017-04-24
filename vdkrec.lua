@@ -3,6 +3,7 @@ local recoltDistance = 10
 local timeForRecolt = 4000 --1000 for 1 second
 --
 
+local near
 local jobId
 JOBS = {}
 
@@ -60,7 +61,7 @@ function recolt(text, rl)
         TriggerEvent("player:receiveItem", tonumber(JOBS[jobId].treat_id), 1)
         TriggerEvent("mt:missiontext", rl .. ' ~g~' .. tostring(JOBS[jobId].treat_item) .. '~s~...', 800)
     elseif (text == 'Vente') then
-        TriggerEvent("mt:missiontext", text .. ' en cours de ~g~' .. tostring(JOBS[jobId].raw_item) .. '~s~...', timeForRecolt - 800)
+        TriggerEvent("mt:missiontext", text .. ' en cours de ~g~' .. tostring(JOBS[jobId].treat_item) .. '~s~...', timeForRecolt - 800)
         Citizen.Wait(timeForRecolt - 800)
         TriggerEvent("player:sellItem", tonumber(JOBS[jobId].treat_id), tonumber(JOBS[jobId].price))
         TriggerEvent("mt:missiontext", rl .. ' ~g~' .. tostring(JOBS[jobId].treat_item) .. '~s~...', 800)
@@ -76,14 +77,24 @@ end
 
 -- Constantly check the position of the player
 Citizen.CreateThread(function()
+    Citizen.Wait(5000)
     while true do
         Citizen.Wait(1)
-        if (IsNear() == 'field') then
-            recolt('Récolte', '+1')
-        elseif (IsNear() == 'treatment' and exports.vdk_inventory:getQuantity(JOBS[jobId].raw_id) > 0) then
-            recolt('Traitement', '+1')
-        elseif (IsNear() == 'seller' and exports.vdk_inventory:getQuantity(JOBS[jobId].treat_id) > 0) then
-            recolt('Vente', '-1')
+        near = IsNear()
+        if (exports.vdk_inventory:notFull() == true) then
+            if (near == 'field') then
+                recolt('Récolte', '+1')
+            elseif (near == 'treatment' and exports.vdk_inventory:getQuantity(JOBS[jobId].raw_id) > 0) then
+                recolt('Traitement', '+1')
+            elseif (near == 'seller' and exports.vdk_inventory:getQuantity(JOBS[jobId].treat_id) > 0) then
+                recolt('Vente', '-1')
+            end
+        else
+            if (near == 'treatment' and exports.vdk_inventory:getQuantity(JOBS[jobId].raw_id) > 0) then
+                recolt('Traitement', '+1')
+            elseif (near == 'seller' and exports.vdk_inventory:getQuantity(JOBS[jobId].treat_id) > 0) then
+                recolt('Vente', '-1')
+            end
         end
     end
 end)
