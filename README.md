@@ -30,6 +30,4 @@ Go to the position of your places in order **(field->treatment->seller)** and ap
 
 Search a minimum with your brain and post **CLEAR and DOCUMENTED** question please ;)
 
-## Notes
-
-It's only my second script so the valuables proposals are always welcome ;)
+## If you want to support me and my work : [Paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B3ZE4W8Y626MA)
