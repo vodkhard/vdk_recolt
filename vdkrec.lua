@@ -30,21 +30,23 @@ end)
 function IsNear()
     local ply = GetPlayerPed(-1)
     local plyCoords = GetEntityCoords(ply, 0)
-    for k, item in ipairs(JOBS) do
-        local distance_field = GetDistanceBetweenCoords(item.fx, item.fy, item.fz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
-        local distance_treatment = GetDistanceBetweenCoords(item.tx, item.ty, item.tz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
-        local distance_seller = GetDistanceBetweenCoords(item.sx, item.sy, item.sz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
-        if (distance_field <= recoltDistance) then
-            jobId = k
-            return 'field'
-        elseif (distance_treatment <= recoltDistance) then
-            jobId = k
-            return 'treatment'
-        elseif (distance_seller <= recoltDistance) then
-            jobId = k
-            return 'seller'
-        end
-    end
+	if(IsPedInAnyVehicle(ply, true) == false) then
+		for k, item in ipairs(JOBS) do
+			local distance_field = GetDistanceBetweenCoords(item.fx, item.fy, item.fz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
+			local distance_treatment = GetDistanceBetweenCoords(item.tx, item.ty, item.tz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
+			local distance_seller = GetDistanceBetweenCoords(item.sx, item.sy, item.sz, plyCoords["x"], plyCoords["y"], plyCoords["z"], true)
+			if (distance_field <= recoltDistance) then
+				jobId = k
+				return 'field'
+			elseif (distance_treatment <= recoltDistance) then
+				jobId = k
+				return 'treatment'
+			elseif (distance_seller <= recoltDistance) then
+				jobId = k
+				return 'seller'
+			end
+		end
+	end
 end
 
 -- Display the message of recolting/treating/selling and trigger the associated event(s)
